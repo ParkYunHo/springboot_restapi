@@ -3,7 +3,6 @@ package com.naver.capcha.rest.mapper;
 import org.springframework.stereotype.Repository;
 import com.naver.capcha.rest.domain.*;
 
-import com.naver.capcha.rest.domain.FileCategoryVO;
 import java.util.*;
 
 @Repository("com.naver.capcha.rest.mapper.RestMapper")
@@ -12,4 +11,5 @@ public interface RestMapper {
 	public int setFile(FileVO vo) throws Exception;
 	public FileVO getFile(int fno) throws Exception;
 	public int setClient(RegisterVO vo) throws Exception;
+	public String checkClientValid(RegisterVO vo) throws Exception;
 }

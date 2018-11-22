@@ -15,4 +15,7 @@
 		insert into client_info (appName, clientID, clientSecret, clientKey) 
 		values (#{appName}, #{clientID}, #{clientSecret}, #{clientKey})
 	</insert>
+	<select id="checkClientValid" parameterType="com.naver.capcha.rest.domain.FileVO" resultType="String">
+		
+	</select>
 </mapper>

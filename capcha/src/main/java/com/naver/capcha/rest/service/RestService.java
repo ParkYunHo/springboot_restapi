@@ -33,4 +33,13 @@ public class RestService {
 		
 		return rm.setClient(vo);
 	}
+	
+	public String checkClientValid(String id, String secret) throws Exception{
+		RegisterVO vo = new RegisterVO();
+		vo.setClientID(id);
+		vo.setClientSecret(secret);
+		
+		
+		return "";
+	}
 }

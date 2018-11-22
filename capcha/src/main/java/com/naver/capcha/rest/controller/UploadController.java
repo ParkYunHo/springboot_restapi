@@ -35,7 +35,8 @@ public class UploadController {
 		String fileName = file.getOriginalFilename(); 
         String fileExtension = FilenameUtils.getExtension(fileName).toLowerCase(); 
         // uploadFiles folder 오른쪽 클릭 Properties > Location (끝에 \\ 붙일것!)
-        String fileUrl = "C:\\dev\\sts-3.9.6.RELEASE\\capcha\\src\\main\\webapp\\WEB-INF\\views\\imgUpload\\";
+        // String fileUrl = "C:\\dev\\sts-3.9.6.RELEASE\\capcha\\src\\main\\webapp\\WEB-INF\\views\\imgUpload\\";
+        String fileUrl = "C:\\Users\\박윤호.DESKTOP-FUNI6TP\\git\\springboot_restapi\\capcha\\src\\main\\webapp\\WEB-INF\\views\\imgUpload\\";
         
         File dsFile; 
         String dsFileName;
