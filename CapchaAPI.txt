@@ -1,0 +1,66 @@
+< API Capcha Process > - Server 
+
+1. Key 발급
+(Request)
+- code = 0
+- (headerProperties) X-Naver-Client-Id = "발급받은 ID"
+- (headerProperties) X-Naver-Client-Secret = "발급받은 Secret"
+(Response)
+- key = "키값"
+
+2. Img 발급
+(Request)
+- key = "키값"
+- (headerProperties) X-Naver-Client-Id = "발급받은 ID"
+- (headerProperties) X-Naver-Client-Secret = "발급받은 Secret"
+(Response)
+- image/jpeg
+
+(Error)
+오류코드 : CT002
+Http 상태 코드 : 400
+오류 메세지 : Unissued image (이미지 발급을 하지 않음)
+
+3. 사용자 검증
+(Request)
+- code = 1
+- key = "키값"
+- value = "사용자입력값"
+- (headerProperties) X-Naver-Client-Id = "발급받은 ID"
+- (headerProperties) X-Naver-Client-Secret = "발급받은 Secret" 
+(Response)
+- result = True/False 
+- responseTime = "10" (0~7200 사이값 반환, 계산할수 없거나 7200초 초과
+                                시에는 "-1"을 반환)
+
+
+Process 
+(Client)
+1. KEY값 요청
+2. KEY값을 받으면 바로 IMAGE 요청
+3. (사용자가 값을 입력) 사용자 입력값 검증
+
+(Server)
+1. Key값 반환 후 response 했을때부터 시간계산
+2. 이미지 반환
+3. 사용자 입력검증이 왔을때
+ 3-1. Key값 반환후 7200초(120분/2시간)가 지났는지 확인
+ 3-2. Key값과 사용자 입력값 검증
+ 3-3. result : Key값과 사용자 입력값 검증
+       responseTime : 걸린시간 (예외상황에서는 -1)
+
+
+Exception
+1. Key를 발급받은 뒤 image를 요청하지 않고 사용자값검증을 요청한 경우
+- CT002 / 400 response하고, Capcha Key를 새로 발급받고 Image를 요청
+  할 것 (즉, Key값의 유효하지 않게 만들것)
+
+
+
+Question
+1. 이미지캡차에서 사용자입력검증시 responseTime의 반환값이 표에서는
+  String으로 되어있는데 아래의 예시에서는 실수형(float)으로 되어있음
+2. 실행시간은 소수점 첫째자리에서 반올림하는것인지, 단순히 자르는 것인지
+3. Client-Id, Client-Secret가 틀렸을때는 어떠한 오류를 Client에게 보내주면
+   되는지?
+
