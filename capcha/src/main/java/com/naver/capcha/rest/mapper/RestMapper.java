@@ -11,4 +11,5 @@ public interface RestMapper {
 	public List<FileCategoryVO> getCategory() throws Exception;
 	public int setFile(FileVO vo) throws Exception;
 	public FileVO getFile(int fno) throws Exception;
+	public int setClient(RegisterVO vo) throws Exception;
 }

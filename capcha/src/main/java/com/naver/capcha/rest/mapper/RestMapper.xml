@@ -11,4 +11,8 @@
 	<select id="getFile" parameterType="int" resultType="com.naver.capcha.rest.domain.FileVO">
 		select * from file where fno = #{fno}
 	</select>
+	<insert id="setClient" parameterType="com.naver.capcha.rest.domain.RegisterVO">
+		insert into client_info (appName, clientID, clientSecret, clientKey) 
+		values (#{appName}, #{clientID}, #{clientSecret}, #{clientKey})
+	</insert>
 </mapper>

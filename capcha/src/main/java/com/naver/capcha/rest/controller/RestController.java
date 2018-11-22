@@ -3,6 +3,8 @@ package com.naver.capcha.rest.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
+
 import org.springframework.web.bind.annotation.*;
 import com.naver.capcha.rest.domain.*;
 import com.naver.capcha.rest.service.*;
@@ -22,6 +24,22 @@ public class RestController {
 	public List<FileCategoryVO> getImg(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		List<FileCategoryVO> fvo = rs.getCategory();
 		return fvo;
+	}
+	
+	// Func : Issue the client key after checking client_Id and client_Secret
+	@RequestMapping(value="/nkey", method=RequestMethod.GET)
+	public Map<String, String> getKeyValue(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		request.setCharacterEncoding("UTF-8");
+		int code = Integer.parseInt(request.getParameter("code"));
+		String clientID = request.getHeader("X-Naver-Client-Id");
+		String clientSecret = request.getHeader("X-Naver-Client-Secret");
+		
+		Map<String, String> res = new HashMap<String, String>();
+		res.put("clientID", clientID);
+		res.put("clientSecret", clientSecret);
+		res.put("code", code+"");
+		
+		return res;
 	}
 	
 	@RequestMapping(value="/getCapchaImg", method=RequestMethod.GET)

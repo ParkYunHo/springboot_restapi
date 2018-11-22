@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -11,13 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.naver.capcha.rest.domain.FileVO;
-import com.naver.capcha.rest.service.RestService;
+import com.naver.capcha.rest.domain.*;
+import com.naver.capcha.rest.service.*;
 
 @Controller
 public class UploadController {
@@ -59,5 +58,24 @@ public class UploadController {
         rs.setFile(vo);
 		
         return new ResponseEntity("Successfully uploaded - " + fileName, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/register", method=RequestMethod.GET)
+	public String register() throws Exception{
+		return "/register";
+	}
+	
+	@RequestMapping(value="/registerProc")
+	public ResponseEntity<?> registerProc(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		RegisterVO vo = new RegisterVO();
+		
+		vo.setAppName(request.getParameter("appName").toString());
+		try {
+			rs.setRegister(vo);
+		}catch(Exception e) {
+			return new ResponseEntity<>("Register Fail", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>("Register Success", HttpStatus.OK);
 	}
 }

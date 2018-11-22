@@ -1,6 +1,8 @@
 package com.naver.capcha.rest.service;
 
 import javax.annotation.Resource;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import com.naver.capcha.rest.domain.*;
 import com.naver.capcha.rest.mapper.RestMapper;
@@ -22,5 +24,13 @@ public class RestService {
 	
 	public FileVO getFile(int fno) throws Exception{
 		return rm.getFile(fno);
+	}
+	
+	public int setRegister(RegisterVO vo) throws Exception{
+		vo.setClientID(RandomStringUtils.randomAlphanumeric(20));
+		vo.setClientSecret(RandomStringUtils.randomAscii(10));
+		vo.setClientKey(RandomStringUtils.randomAlphanumeric(16));
+		
+		return rm.setClient(vo);
 	}
 }
