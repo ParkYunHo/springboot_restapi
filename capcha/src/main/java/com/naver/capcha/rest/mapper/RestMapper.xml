@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.naver.capcha.rest.mapper.RestMapper">
+	<select id="getCategory" resultType="com.naver.capcha.rest.domain.FileCategoryVO">
+		select * from file_category
+	</select>
+	<insert id="setFile" parameterType="com.naver.capcha.rest.domain.FileVO">
+		insert into file (cno, name, oriname, url) values (#{cno}, #{name}, #{oriname}, #{url})
+	</insert>
+	<select id="getFile" parameterType="int" resultType="com.naver.capcha.rest.domain.FileVO">
+		select * from file where fno = #{fno}
+	</select>
+</mapper>
