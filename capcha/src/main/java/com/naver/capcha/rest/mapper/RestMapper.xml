@@ -3,7 +3,7 @@
 
 <mapper namespace="com.naver.capcha.rest.mapper.RestMapper">
 	<select id="getCategory" resultType="com.naver.capcha.rest.domain.FileCategoryVO">
-		select * from file_category
+		select * from category
 	</select>
 	<insert id="setFile" parameterType="com.naver.capcha.rest.domain.FileVO">
 		insert into file (cno, name, oriname, url) values (#{cno}, #{name}, #{oriname}, #{url})
@@ -12,10 +12,25 @@
 		select * from file where fno = #{fno}
 	</select>
 	<insert id="setClient" parameterType="com.naver.capcha.rest.domain.RegisterVO">
-		insert into client_info (appName, clientID, clientSecret, clientKey) 
-		values (#{appName}, #{clientID}, #{clientSecret}, #{clientKey})
+		insert into client_info (sn, appName, clientID, clientSecret, IsIssued, category) 
+		values (concat(concat(#{clientID},'_'),date_format(now(), '%Y%m%d%h%i%s')), #{appName}, #{clientID}, #{clientSecret}, 0, 0)
 	</insert>
-	<select id="checkClientValid" parameterType="com.naver.capcha.rest.domain.FileVO" resultType="String">
-		
+	<select id="checkClientValid" parameterType="com.naver.capcha.rest.domain.FileVO" resultType="int">
+		select case when count(*) > 0 then 1 else 0 end as valid
+		from client_info where clientID = #{clientID} and clientSecret = #{clientSecret};
 	</select>
+	<update id="setKey" parameterType="com.naver.capcha.rest.domain.RegisterVO">
+		update client_info set clientKey = #{clientKey} where clientID = #{clientID} and clientSecret = #{clientSecret}
+	</update>
+	<select id="checkKeyValid" parameterType="com.naver.capcha.rest.domain.RegisterVO" resultType="int">
+		select case when clientKey = #{clientKey}  then 1 else 0 end as valid from client_info where clientID = #{clientID} and clientSecret = #{clientSecret}   
+	</select>	
+	<update id="setIsIssued" parameterType="com.naver.capcha.rest.domain.RegisterVO">
+		update client_info set IsIssued = #{IsIssued} where clientID = #{clientID} and clientSecret = #{clientSecret}
+	</update>
+	<update id="randomImage" parameterType="com.naver.capcha.rest.domain.RegisterVO">
+		update client_info a, (select max(cno) max_cno from category) b 
+		set a.category = FLOOR(1 + RAND() * b.max_cno) 
+		where a.clientID = #{clientID} and a.clientSecret = #{clientSecret};	
+	</update>
 </mapper>

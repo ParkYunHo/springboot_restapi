@@ -6,7 +6,14 @@ public class RegisterVO {
 	private String clientID;
 	private String clientSecret;
 	private String clientKey;
+	private int IsIssued;
 	
+	public int getIsIssued() {
+		return IsIssued;
+	}
+	public void setIsIssued(int isIssued) {
+		IsIssued = isIssued;
+	}
 	public int getSn() {
 		return sn;
 	}

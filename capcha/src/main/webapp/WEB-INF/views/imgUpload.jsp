@@ -19,7 +19,7 @@
 					</button>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 						<c:forEach var="c" items="${categoryList}">
-						 	<li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value="${c.cno}">${c.name}</a></li>
+						 	<li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" data-value="${c.cno}">${c.name}</a></li>
 				          </c:forEach>
 					</ul>
 				</div>
