@@ -243,10 +243,8 @@ public class RestController {
 		            i--;
 		        }*/
 		    }
-			
-			
-			
-			String text = "";
+			 
+			String text = "Jsoup Test";
 			return text;
 		} catch (IOException e) { //Jsoup의 connect 부분에서 IOException 오류가 날 수 있으므로 사용한다.   
 			e.printStackTrace();
