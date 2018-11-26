@@ -1,18 +1,31 @@
 package com.naver.capcha.rest.controller;
 
 import javax.annotation.Resource;
+import javax.lang.model.element.Element;
+import javax.lang.model.util.Elements;
+
 import java.math.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.Document;
 import javax.websocket.server.PathParam;
 
+import org.jsoup.nodes.*;
+import org.jsoup.Jsoup;
 import org.springframework.web.bind.annotation.*;
 import com.naver.capcha.rest.domain.*;
 import com.naver.capcha.rest.service.*;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.*;
 
@@ -137,4 +150,99 @@ public class RestController {
 		
 		return "";
 	}
+	
+	
+	// Jsoup로 Wiki HTML 크롤링 Test
+	@RequestMapping(value="/htmlTest", method=RequestMethod.GET)
+//	public ArrayList<String> getSource() throws MalformedURLException, IOException {
+	public String getSource() throws MalformedURLException, IOException {
+		// No 1
+		/*String text_url = "https://en.wikipedia.org/wiki/Contrasting_and_categorization_of_emotions";
+		ArrayList<String> output = new ArrayList<>(); 
+		BufferedReader br = new BufferedReader(new InputStreamReader(new URL(text_url).openStream(),"utf-8")); 
+		String line; 
+		while ((line = br.readLine()) != null) { 
+		output.add(line); 
+		} 
+		
+		return output;*/ 
+		
+		// No 2
+		/*URL text_url = new URL("https://en.wikipedia.org/wiki/Contrasting_and_categorization_of_emotions");
+	    org.jsoup.nodes.Document doc = Jsoup.parse(text_url, 3000);
+
+	    ArrayList<String> downServers = new ArrayList<>();
+	    org.jsoup.nodes.Element table = doc.select("table").get(0); //select the first table.
+	    org.jsoup.select.Elements rows = table.select("tr");
+
+	    for (int i = 1; i < rows.size(); i++) { //first row is the col names so skip it.
+	        org.jsoup.nodes.Element row = rows.get(i);
+	        org.jsoup.select.Elements cols = row.select("td");
+
+	        if (cols.get(3).text().equals("Titan")) {
+	            if (cols.get(7).text().equals("down"))
+	                downServers.add(cols.get(5).text());
+
+	            do {
+	                if(i < rows.size() - 1)
+	                   i++;
+	                row = rows.get(i);
+	                cols = row.select("td");
+	                if (cols.get(7).text().equals("down") && cols.get(3).text().equals("")) {
+	                    downServers.add(cols.get(5).text());
+	                }
+	                if(i == rows.size() - 1)
+	                    break;
+	            }
+	            while (cols.get(3).text().equals(""));
+	            i--;
+	        }
+	    }
+	    return downServers;*/
+		
+		// No 3
+		ArrayList<String> downServers = new ArrayList<>();
+		try {
+			//웹에서 내용을 가져온다.
+			org.jsoup.nodes.Document doc = Jsoup.connect("https://en.wikipedia.org/wiki/Contrasting_and_categorization_of_emotions").get();
+			//내용 중에서 원하는 부분을 가져온다.
+			org.jsoup.select.Elements contents = doc.select("body .wikitable");
+			org.jsoup.nodes.Element table = contents.get(1);
+			org.jsoup.select.Elements rows = table.select("tr");
+			
+			 for (int i = 1; i < rows.size(); i++) { //first row is the col names so skip it.
+		        org.jsoup.nodes.Element row = rows.get(i);
+		        org.jsoup.select.Elements cols = row.select("td");
+
+		        /*if (cols.get(3).text().equals("Titan")) {
+		            if (cols.get(7).text().equals("down"))
+		                downServers.add(cols.get(5).text());
+
+		            do {
+		                if(i < rows.size() - 1)
+		                   i++;
+		                row = rows.get(i);
+		                cols = row.select("td");
+		                if (cols.get(7).text().equals("down") && cols.get(3).text().equals("")) {
+		                    downServers.add(cols.get(5).text());
+		                }
+		                if(i == rows.size() - 1)
+		                    break;
+		            }
+		            while (cols.get(3).text().equals(""));
+		            i--;
+		        }*/
+		    }
+			
+			
+			
+			String text = "";
+			return text;
+		} catch (IOException e) { //Jsoup의 connect 부분에서 IOException 오류가 날 수 있으므로 사용한다.   
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	
 }
